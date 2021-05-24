@@ -7,23 +7,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Communicator{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        openFirstFragment(0);
+        passFirstFragment(0);
     }
 
-    private void openFirstFragment(int previousNumber) {
+    @Override
+    public void passFirstFragment(int previousNumber) {
         final Fragment firstFragment = FirstFragment.newInstance(previousNumber);
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, firstFragment);
-        // TODO: invoke function which apply changes of the transaction
+        transaction.commit();
     }
 
-    private void openSecondFragment(int min, int max) {
-        // TODO: implement it
+    @Override
+    public void passSecondFragment(int min, int max) {
+        final Fragment secondFragment = SecondFragment.newInstance(min, max);
+        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, secondFragment);
+        transaction.commit();
     }
+
 }

@@ -1,39 +1,137 @@
 package com.rsschool.android2021
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import com.rsschool.android2021.databinding.FragmentFirstBinding
 
 class FirstFragment : Fragment() {
 
-    private var generateButton: Button? = null
-    private var previousResult: TextView? = null
+    private lateinit var communicator: Communicator
+    private lateinit var binding: FragmentFirstBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_first, container, false)
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_first, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        previousResult = view.findViewById(R.id.previous_result)
-        generateButton = view.findViewById(R.id.generate)
 
         val result = arguments?.getInt(PREVIOUS_RESULT_KEY)
-        previousResult?.text = "Previous result: ${result.toString()}"
+        binding.previousResult.text = "Previous result: ${result.toString()}"
 
-        // TODO: val min = ...
-        // TODO: val max = ...
+        var min = 0
+        var max = 0
+        val generate = binding.generate
+        val minValue = binding.minValue
+        val maxValue = binding.maxValue
+        communicator = activity as Communicator
 
-        generateButton?.setOnClickListener {
-            // TODO: send min and max to the SecondFragment
+        generate.isEnabled = false
+
+        minValue.doAfterTextChanged {
+            minValue.text.toString().let {
+                when (true) {
+                    TextUtils.isEmpty(it) -> {
+                        minValue.error = getString(R.string.ERROR_EMPTY)
+                        generate.isEnabled = false
+                    }
+                    it.toDouble() > 2_147_483_647 ->{
+                        minValue.setText("")
+                        minValue.error = getString(R.string.ERROR_TOO_BIG)
+                        generate.isEnabled = false
+                    }
+                    it.toInt() < 0 -> {
+                        minValue.error = getString(R.string.ERROR_TOO_SMALL)
+                        generate.isEnabled = false
+                    }
+                    it.toIntOrNull() == null -> {
+                        minValue.error = getString(R.string.ERROR_INVALID_COMMON)
+                        generate.isEnabled = false
+                    }
+                    !TextUtils.isEmpty(maxValue.text.toString()) && it.toInt() > maxValue.text.toString()
+                        .toInt() -> {
+                        maxValue.error = null
+                        minValue.error = getString(R.string.ERROR_MIN_MORE_MAX)
+                        generate.isEnabled = false
+                        min = it.toInt()
+                    }
+                    TextUtils.isEmpty(maxValue.text.toString()) -> {
+                        maxValue.error = getString(R.string.ERROR_EMPTY_MAX)
+                        generate.isEnabled = false
+                        min = it.toInt()
+                    }
+                    else -> {
+                        maxValue.error = null
+                        minValue.error = null
+                        generate.isEnabled = true
+                        min = it.toInt()
+                    }
+                }
+            }
+        }
+
+        maxValue.doAfterTextChanged {
+            maxValue.text.toString().let {
+                when (true) {
+                    TextUtils.isEmpty(it) -> {
+                        maxValue.error = getString(R.string.ERROR_EMPTY)
+                        generate.isEnabled = false
+                    }
+                    it.toDouble() > 2_147_483_647 ->{
+                        maxValue.setText("")
+                        maxValue.error = getString(R.string.ERROR_TOO_BIG)
+                        generate.isEnabled = false
+                    }
+                    it.toInt() < 0 -> {
+                        maxValue.error = getString(R.string.ERROR_TOO_SMALL)
+                        generate.isEnabled = false
+                    }
+                    it.toIntOrNull() == null -> {
+                        maxValue.error = getString(R.string.ERROR_INVALID_COMMON)
+                        generate.isEnabled = false
+                    }
+                    !TextUtils.isEmpty(minValue.text.toString()) && it.toInt() < minValue.text.toString()
+                        .toInt() -> {
+                        minValue.error = null
+                        maxValue.error = getString(R.string.ERROR_MIN_MORE_MAX)
+                        generate.isEnabled = false
+                        max = it.toInt()
+                    }
+                    TextUtils.isEmpty(minValue.text.toString()) -> {
+                        minValue.error = getString(R.string.ERROR_EMPTY_MIN)
+                        generate.isEnabled = false
+                        max = it.toInt()
+                    }
+                    else -> {
+                        maxValue.error = null
+                        minValue.error = null
+                        generate.isEnabled = true
+                        max = it.toInt()
+                    }
+                }
+            }
+        }
+
+
+        generate.setOnClickListener {
+            communicator.passSecondFragment(min, max)
         }
     }
 

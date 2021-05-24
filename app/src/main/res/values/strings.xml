@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">randomizer</string>
+    <string name="ERROR_EMPTY">Input data is empty</string>
+    <string name="ERROR_TOO_SMALL">Enter data >= 0</string>
+    <string name="ERROR_TOO_BIG">Enter data &lt; 2.147.483.647</string>
+    <string name="ERROR_INVALID_COMMON">Invalid input data</string>
+    <string name="ERROR_EMPTY_MIN">Input data is empty for min</string>
+    <string name="ERROR_EMPTY_MAX">Input data is empty for max</string>
+    <string name="ERROR_MIN_MORE_MAX">Min must be less than max</string>
 </resources>
