@@ -51,7 +51,7 @@ class FirstFragment : Fragment() {
                         minValue.error = getString(R.string.ERROR_EMPTY)
                         setGenerate(false)
                     }
-                    it.toDouble() > 2_147_483_647 ->{
+                    it.toDouble() > Int.MAX_VALUE ->{
                         minValue.setText("")
                         minValue.error = getString(R.string.ERROR_TOO_BIG)
                         setGenerate(false)
@@ -93,7 +93,7 @@ class FirstFragment : Fragment() {
                         maxValue.error = getString(R.string.ERROR_EMPTY)
                         setGenerate(false)
                     }
-                    it.toDouble() > 2_147_483_647 ->{
+                    it.toDouble() > Int.MAX_VALUE ->{
                         maxValue.setText("")
                         maxValue.error = getString(R.string.ERROR_TOO_BIG)
                         setGenerate(false)
