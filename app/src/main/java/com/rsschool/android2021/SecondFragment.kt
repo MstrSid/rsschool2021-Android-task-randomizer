@@ -62,9 +62,6 @@ class SecondFragment : Fragment() {
             args.putInt(MIN_VALUE_KEY, min)
             args.putInt(MAX_VALUE_KEY, max)
             fragment.arguments = args
-
-            // TODO: implement adding arguments
-
             return fragment
         }
 
