@@ -45,35 +45,30 @@ class FirstFragment : Fragment() {
         setGenerate(false)
 
         minValue.doAfterTextChanged {
+            setGenerate(false)
             minValue.text.toString().let {
                 when (true) {
                     TextUtils.isEmpty(it) -> {
                         minValue.error = getString(R.string.ERROR_EMPTY)
-                        setGenerate(false)
                     }
-                    it.toDouble() > Int.MAX_VALUE ->{
+                    it.toDouble() > Int.MAX_VALUE -> {
                         minValue.setText("")
                         minValue.error = getString(R.string.ERROR_TOO_BIG)
-                        setGenerate(false)
                     }
                     it.toInt() < 0 -> {
                         minValue.error = getString(R.string.ERROR_TOO_SMALL)
-                        setGenerate(false)
                     }
                     it.toIntOrNull() == null -> {
                         minValue.error = getString(R.string.ERROR_INVALID_COMMON)
-                        setGenerate(false)
                     }
                     !TextUtils.isEmpty(maxValue.text.toString()) && it.toInt() > maxValue.text.toString()
                         .toInt() -> {
                         maxValue.error = null
                         minValue.error = getString(R.string.ERROR_MIN_MORE_MAX)
-                        setGenerate(false)
                         min = it.toInt()
                     }
                     TextUtils.isEmpty(maxValue.text.toString()) -> {
                         maxValue.error = getString(R.string.ERROR_EMPTY_MAX)
-                        setGenerate(false)
                         min = it.toInt()
                     }
                     else -> {
@@ -87,35 +82,30 @@ class FirstFragment : Fragment() {
         }
 
         maxValue.doAfterTextChanged {
+            setGenerate(false)
             maxValue.text.toString().let {
                 when (true) {
                     TextUtils.isEmpty(it) -> {
                         maxValue.error = getString(R.string.ERROR_EMPTY)
-                        setGenerate(false)
                     }
-                    it.toDouble() > Int.MAX_VALUE ->{
+                    it.toDouble() > Int.MAX_VALUE -> {
                         maxValue.setText("")
                         maxValue.error = getString(R.string.ERROR_TOO_BIG)
-                        setGenerate(false)
                     }
                     it.toInt() < 0 -> {
                         maxValue.error = getString(R.string.ERROR_TOO_SMALL)
-                        setGenerate(false)
                     }
                     it.toIntOrNull() == null -> {
                         maxValue.error = getString(R.string.ERROR_INVALID_COMMON)
-                        setGenerate(false)
                     }
                     !TextUtils.isEmpty(minValue.text.toString()) && it.toInt() < minValue.text.toString()
                         .toInt() -> {
                         minValue.error = null
                         maxValue.error = getString(R.string.ERROR_MIN_MORE_MAX)
-                        setGenerate(false)
                         max = it.toInt()
                     }
                     TextUtils.isEmpty(minValue.text.toString()) -> {
                         minValue.error = getString(R.string.ERROR_EMPTY_MIN)
-                        setGenerate(false)
                         max = it.toInt()
                     }
                     else -> {
@@ -134,7 +124,7 @@ class FirstFragment : Fragment() {
         }
     }
 
-    private fun setGenerate(status: Boolean){
+    private fun setGenerate(status: Boolean) {
         binding.generate.isEnabled = status
     }
 
