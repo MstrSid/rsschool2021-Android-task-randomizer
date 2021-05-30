@@ -44,7 +44,7 @@ class SecondFragment : Fragment() {
 
         // pass result and back to first fragment
         binding.back.setOnClickListener {
-            communicator.passFirstFragment(binding.result.text.toString().toInt())
+            activity?.onBackPressed()
         }
 
     }
