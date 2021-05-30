@@ -7,4 +7,5 @@
     <string name="ERROR_EMPTY_MIN">Input data is empty for min</string>
     <string name="ERROR_EMPTY_MAX">Input data is empty for max</string>
     <string name="ERROR_MIN_MORE_MAX">Min must be less than max</string>
+    <string name="SATAN">\nEtis atis animatis… etis atis amatis…</string>
 </resources>

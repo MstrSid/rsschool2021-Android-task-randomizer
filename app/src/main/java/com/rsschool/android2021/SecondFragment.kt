@@ -1,12 +1,15 @@
 package com.rsschool.android2021
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.rsschool.android2021.databinding.FragmentSecondBinding
 
 class SecondFragment : Fragment() {
@@ -39,10 +42,16 @@ class SecondFragment : Fragment() {
 
 
         communicator = activity as Communicator
+        binding.apply {
+        result.text = generate(min, max).toString()
+        if (result.text == "666"){
+            result.setTextColor(Color.RED)
+            Snackbar.make(result, R.string.SATAN, Snackbar.LENGTH_LONG).setTextColor(Color.RED).show()
+        }
+    }
 
-        binding.result.text = generate(min, max).toString()
 
-        // pass result and back to first fragment
+    // pass result and back to first fragment
         binding.back.setOnClickListener {
             activity?.onBackPressed()
         }
